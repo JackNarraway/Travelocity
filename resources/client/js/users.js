@@ -45,8 +45,11 @@ function getUser() {
 
 //addUser function to add a user to the database
 function addUser() {
+    let d = new Date();
     console.log("Invoked AddUser()");
     const formData = new FormData(document.getElementById('InputUserDetails'));
+    formData.append("ValidatedDate", d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear());
+    formData.append("admin", "0");
     let url = "/users/add";
     fetch(url, {
         method: "POST",
