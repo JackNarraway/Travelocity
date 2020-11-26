@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 
 public class UserAchievementsController {
     @POST
-    @Path("list")
+    @Path("list/")
         public String UsersList(@FormDataParam("UserID") Integer UserID, @FormDataParam("AchievementID") Integer AchievementID) {
             System.out.println("Invoked UserAchievements.List()");
             JSONArray response = new JSONArray();

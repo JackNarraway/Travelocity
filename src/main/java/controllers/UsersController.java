@@ -7,8 +7,11 @@ import server.Main;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Path("users/")
 @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -67,13 +70,15 @@ public class UsersController{
     @Path("add")
     public String UsersAdd(@FormDataParam("EmailAddress") String EmailAddress, @FormDataParam("FirstName") String FirstName, @FormDataParam("LastName") String LastName, @FormDataParam("ValidatedDate") String ValidatedDate, @FormDataParam("Admin") Boolean Admin, @FormDataParam("Password") String Password) {
         System.out.println("Invoked Users.UsersAdd()");
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter myFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         try {
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (EmailAddress, FirstName, LastName, ValidatedDate, Admin, Password) VALUES (?, ?, ?, ?, ?, ?)");
             ps.setString(1, EmailAddress);
             ps.setString(2, FirstName);
             ps.setString(3, LastName);
-            ps.setString(4, ValidatedDate);
-            ps.setBoolean(5, Admin);
+            ps.setString(4, now.format(myFormat));
+            ps.setBoolean(5, false);
             ps.setString(6, Password);
             ps.execute();
             return "{\"OK\": \"Added user.\"}";

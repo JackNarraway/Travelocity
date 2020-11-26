@@ -2,9 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Travelocity</title>
+    <script src="/client/js/users.js"></script>
+    <link rel="stylesheet" type="text/css" href="/client/css/styles.css">
 </head>
 <body>
-Hello World!
+<button onclick='getUsersList();'>Run getUsersList</button>
+<table id="UsersTable"></table>
+<br>
+
+<form id="userDetails">
+    User id: <input type="text" id="UserID">
+</form>
+<button onclick='getUser();'>Run getUser</button>
+<div id="DisplayOneUser"></div>
+<br>
+
+
+<form id="InputUserDetails">
+    Email Address: <input type="text" name="Email Address">
+    Password: <input type="text" name="Password">
+    First Name: <input type="text" name="FirstName">
+    Last Name: <input type="text" name="LastName">
+
+</form>
+<button onclick='addUser();'>Add User</button>
 </body>
 </html>
