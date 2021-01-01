@@ -53,5 +53,5 @@ public class Main {
         } catch (Exception exception) {
             System.out.println("Database connection error: " + exception.getMessage());
         }
-    }
-}
+        }
+        }

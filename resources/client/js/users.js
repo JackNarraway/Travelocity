@@ -60,7 +60,7 @@ function addUser() {
         if (response.hasOwnProperty("Error")) {
             alert(JSON.stringify(response));
         } else {
-            window.open("/client/user.html", "_self");   //URL replaces the current page.  Create a new html file
-        }                                                  //in the client folder called welcome.html
+            window.open("/client/userS.html", "_self");
+        }
     });
 }

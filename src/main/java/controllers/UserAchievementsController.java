@@ -10,7 +10,8 @@ import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 @Path("userachievements/")
-
+@Consumes(MediaType.MULTIPART_FORM_DATA)
+@Produces(MediaType.APPLICATION_JSON)
 public class UserAchievementsController {
     @POST
     @Path("list/")
