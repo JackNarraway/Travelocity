@@ -60,7 +60,50 @@ function addUser() {
         if (response.hasOwnProperty("Error")) {
             alert(JSON.stringify(response));
         } else {
-            window.open("/client/userS.html", "_self");
+            window.open("http://localhost:8081/client/userS.html", "_self");
         }
     });
 }
+
+
+
+function UsersLogin() {
+    //debugger;
+    console.log("Invoked UsersLogin() ");
+    let url = "/users/login";
+    let formData = new FormData(document.getElementById('LoginForm'));
+
+    fetch(url, {
+        method: "POST",
+        body: formData,
+    }).then(response => {
+        return response.json();
+    }).then(response => {
+        if (response.hasOwnProperty("Error")) {
+            alert(JSON.stringify(response));
+        } else {
+            Cookies.set("SessionToken", response.SessionToken);
+            Cookies.set("UserID", response.UserID);
+            window.open("http://localhost:8081/client/user.html", "_self");
+        }
+    });
+}
+
+function logout() {
+    debugger;
+    console.log("Invoked logout");
+    let url = "/users/logout";
+    fetch(url, {method: "POST"
+    }).then(response => {
+        return response.json();
+    }).then(response => {
+        if (response.hasOwnProperty("Error")) {
+            alert(JSON.stringify(response));
+        } else {
+            Cookies.remove("SessionToken", response.SessionToken);
+            Cookies.remove("EmailAddress", response.EmailAddress);
+            window.open("http://localhost:8081/client/login.html", "_self");
+        }
+    });
+}
+
