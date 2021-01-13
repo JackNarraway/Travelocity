@@ -60,7 +60,7 @@ function addUser() {
         if (response.hasOwnProperty("Error")) {
             alert(JSON.stringify(response));
         } else {
-            window.open("http://localhost:8081/client/userS.html", "_self");
+            window.open("http://localhost:8081/client/user.html", "_self");
         }
     });
 }
@@ -84,7 +84,7 @@ function UsersLogin() {
         } else {
             Cookies.set("SessionToken", response.SessionToken);
             Cookies.set("UserID", response.UserID);
-            window.open("http://localhost:8081/client/user.html", "_self");
+            window.open("user.html", "_self");
         }
     });
 }

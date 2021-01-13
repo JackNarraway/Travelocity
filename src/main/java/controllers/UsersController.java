@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @Path("users/")
 @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -143,7 +144,7 @@ public class UsersController{
     public static String logout(@CookieParam("Token") String Token){
         try{
             System.out.println("users/logout "+ Token);
-            PreparedStatement ps = Main.db.prepareStatement("SELECT UserID FROM Users WHERE Token=?");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT UserID FROM Users WHERE SessionToken=?");
             ps.setString(1, Token);
             ResultSet logoutResults = ps.executeQuery();
             if (logoutResults.next()){
@@ -160,6 +161,41 @@ public class UsersController{
         } catch (Exception ex) {
             System.out.println("Database error during /users/logout: " + ex.getMessage());
             return "{\"error\": \"Server side error!\"}";
+        }
+    }
+
+    @POST
+    @Path("login")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String loginUser(@FormDataParam("email") String email, @FormDataParam("password") String password) {
+        System.out.println("Invoked loginUser() on path user/login");
+        try {
+            PreparedStatement ps1 = Main.db.prepareStatement("SELECT UserID,Password FROM Users WHERE EmailAddress = ?");
+            ps1.setString(1, email);
+            ResultSet loginResults = ps1.executeQuery();
+            if (loginResults.next()) {
+                String correctPassword = loginResults.getString(2);
+                if (password.equals(correctPassword)) {
+                    String token = UUID.randomUUID().toString();
+                    PreparedStatement ps2 = Main.db.prepareStatement("UPDATE Users SET SessionToken = ? WHERE EmailAddress = ?");
+                    ps2.setString(1, token);
+                    ps2.setString(2, email);
+                    ps2.executeUpdate();
+                    JSONObject userDetails = new JSONObject();
+                    userDetails.put("UserID", loginResults.getInt(1));
+                    userDetails.put("SessionToken", token);
+                    System.out.println(userDetails.toString());
+                    return userDetails.toString();
+                } else {
+                    return "{\"Error\": \"Incorrect password!\"}";
+                }
+            } else {
+                return "{\"Error\": \"Username is incorrect.\"}";
+            }
+        } catch (Exception exception) {
+            System.out.println("Database error during /user/login: " + exception.getMessage());
+            return "{\"Error\": \"Server side error!\"}";
         }
     }
 
